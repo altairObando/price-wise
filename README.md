@@ -16,6 +16,54 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo start
    ```
 
+## Price Wise
+
+Price Wise es una aplicación móvil diseñada para ayudar a los usuarios a buscar y comparar precios de productos en diferentes supermercados de Nicaragua. Utiliza técnicas de scraping para obtener información actualizada directamente de los sitios web de los supermercados, permitiendo a los usuarios tomar decisiones de compra informadas y ahorrar dinero.
+
+## Características principales
+
+- Búsqueda de productos en múltiples supermercados nicaragüenses.
+- Comparación de precios en tiempo real mediante scraping.
+- Interfaz intuitiva y fácil de usar.
+- Resultados rápidos y relevantes.
+
+## Tecnologías utilizadas
+
+- **React Native** (Expo) para el desarrollo móvil multiplataforma.
+- **TypeScript** para tipado estático y mayor robustez.
+- **Scraping** para la obtención de datos de los supermercados.
+
+## Instalación y ejecución
+
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/price-wise.git
+   cd price-wise
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Inicia la aplicación en modo desarrollo:
+   ```bash
+   npx expo start
+   ```
+
+## Estructura del proyecto
+
+- `app/` — Código principal de la app y pantallas.
+- `src/components/` — Componentes reutilizables.
+- `src/hooks/` — Hooks personalizados.
+- `src/lib/` — Lógica de servicios y utilidades.
+- `src/dto/` — Definiciones de tipos y modelos de datos.
+
+## Contribuciones
+
+¡Las contribuciones son bienvenidas! Si deseas agregar nuevas funcionalidades o mejorar el scraping para más supermercados, por favor abre un issue o un pull request.
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT.
 In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
