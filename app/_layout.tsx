@@ -1,24 +1,47 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { RoundedIcon } from '@/src/components/util/RoundedIcon';
+import { Tabs } from 'expo-router';
+import { StatusBar, useColorScheme, View } from 'react-native';
+import { MD3DarkTheme as DarkTheme, MD3LightTheme as DefaultTheme, Icon, PaperProvider, useTheme } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+function RootLayout() {
+  const theme = useTheme();
+  return <Tabs screenOptions={{
+    headerTitle: 'Price Wise',
+    headerLeft: (props) => <RoundedIcon {...props} source='menu' />,
+    headerRight: (props) => <View style={{ display:'flex', flexDirection:'row', gap: 8 }}>
+      <RoundedIcon {...props} size={24} source='bell' />
+      <RoundedIcon {...props} size={24} source='account' />
+    </View>,
+    headerStyle:{
+      backgroundColor: theme.colors.background
+    },
+    headerTintColor: theme.colors.onBackground,
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    tabBarStyle: {
+      backgroundColor: theme.colors.background,
+      borderTopWidth: 0,
+    },
+    tabBarActiveTintColor: theme.colors.primary,
+    tabBarInactiveTintColor: theme.colors.secondary,
+  }}>
+    <Tabs.Screen name='index' options={{ title:'Home', tabBarIcon: (props) => <Icon {...props} source='home' />}} />
+    <Tabs.Screen name='search' options={{ title:'Search', tabBarIcon: (props) => <Icon {...props} source='magnify' />}} />
+  </Tabs>
+}
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
+export default function App(){
+  const scheme = useColorScheme();
+  const isDark = scheme === 'dark';
+  const theme = isDark ? DarkTheme : DefaultTheme;
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <PaperProvider theme={{...theme, colors:{...theme.colors, primary: '#663399'}}}>
+        <StatusBar />
+        <RootLayout />      
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 }
