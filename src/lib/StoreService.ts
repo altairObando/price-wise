@@ -9,7 +9,7 @@ class StoreService {
   private constructor() {
     this.axiosInstance = axios.create({
       baseURL: 'https://storescraper.nacatamalitosoft.lat/',
-      timeout: 5000, // Set a timeout of 5 seconds
+      timeout: 60000, // Set a timeout of 60 seconds
     });
   }
 
