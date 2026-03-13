@@ -1,20 +1,23 @@
 import { ProductCard } from '@/src/components/Home/ProductCard';
 import { SearchBarHeader } from '@/src/components/Home/SearchBarHeader';
-import { AppContext } from '@/src/hooks/AppContext';
+import { AppContext, Store } from '@/src/hooks/AppContext';
 import { Product, StoreProduct } from '@/src/lib/dto/Product';
+import { normalizeText } from '@/src/lib/misc';
+import { useRouter } from 'expo-router';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { ActivityIndicator, Surface, Text } from 'react-native-paper';
 
 export default function Index() {
-  const { searchProduct, loading, getRecomendations, stores, setStores } = useContext(AppContext);
+  const router = useRouter();
+  const { loading, getRecomendations, stores, setStores } = useContext(AppContext);
   const [products, setProducts] = useState<Product[]>([]);
   const [searchText, setSearchText] = useState('');
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     getRecomendations().then((response: StoreProduct[]) => {
-      const store_names = response.map(item => normalizeText(item.store_name));
+      const store_names = response.map<Store>(item => ({ code: item.store_name, name: normalizeText(item.store_name)}));
       const product_items = response.flatMap(store => store.products);
       
       setStores(store_names);
@@ -24,6 +27,10 @@ export default function Index() {
       })));
     });
   }, []);
+  const onSearchProduct=()=>{
+    if(!searchText) return;
+    router.push({ pathname: '/(home)/search', params: { search: searchText }})
+  }
   const sortedProducts = useMemo(() => {
     return [...products].sort((a, b) => (a.discount ?? '') > (b.discount ?? '') ? -1 : 1);
   }, [products]);
@@ -33,8 +40,8 @@ export default function Index() {
       <SearchBarHeader 
         value={searchText}
         onChange={setSearchText}
-        onSubmit={() => searchProduct(searchText)}
-        stores={stores}
+        onSubmit={() => onSearchProduct()}
+        stores={stores.map(item => item.name)}
         showMenu={showMenu}
         setShowMenu={setShowMenu}
       />
@@ -52,10 +59,4 @@ export default function Index() {
       />
     </Surface>
   );
-}
-
-function normalizeText(name: string) {
-  if (!name?.trim()) return '';
-  let baseName = name.replace(/_/g, ' ');
-  return baseName.charAt(0).toUpperCase() + baseName.slice(1);
 }

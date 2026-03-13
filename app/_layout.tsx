@@ -5,11 +5,13 @@ import { StatusBar, useColorScheme, View } from 'react-native';
 import { MD3DarkTheme as DarkTheme, MD3LightTheme as DefaultTheme, Icon, PaperProvider, useTheme } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+export const unstable_settings = {
+  anchor: '(home)',
+};
 function RootLayout() {
   const theme = useTheme();
   return <Tabs screenOptions={{
     headerTitle: 'Price Wise',
-    headerLeft: (props) => <RoundedIcon {...props} source='menu' />,
     headerRight: (props) => <View style={{ display:'flex', flexDirection:'row', gap: 8 }}>
       <RoundedIcon {...props} size={24} source='bell' />
       <RoundedIcon {...props} size={24} source='account' />
@@ -28,8 +30,10 @@ function RootLayout() {
     tabBarActiveTintColor: theme.colors.primary,
     tabBarInactiveTintColor: theme.colors.secondary,
   }}>
-    <Tabs.Screen name='index' options={{ title:'Home', tabBarIcon: (props) => <Icon {...props} source='home' />}} />
-    <Tabs.Screen name='search' options={{ title:'Search', tabBarIcon: (props) => <Icon {...props} source='magnify' />}} />
+    <Tabs.Screen name='(home)' options={{ headerShown: false, title:'Home', tabBarIcon: (props) => <Icon {...props} source='home' />}} />
+    <Tabs.Screen name='fav' options={{ title:'Favoritos', tabBarIcon: (props) => <Icon {...props} source='heart' />}} />
+    <Tabs.Screen name='alerts' options={{ title:'Alertas', tabBarIcon: props => <Icon {...props} source='bell' /> }} />
+    <Tabs.Screen name='profile' options={{ title:'Perfil', tabBarIcon: (props) => <Icon {...props} source='account' />}} />
   </Tabs>
 }
 
