@@ -6,6 +6,7 @@ import StoreService from '../lib/StoreService';
 export interface Store {
     code: string;
     name: string;
+    enabled: boolean
 }
 export interface AppContextProps {
     stores: Store[],

@@ -10,9 +10,8 @@ interface ProductCardProps {
 
 export const ProductCard = ({ item }: ProductCardProps) => {
   const theme = useTheme();
-  const blurhash = '|rF?hV%2WCj[ayj[a|j[ayofayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
   return (
-    <Card contentStyle={ styles.cardContainer }>
+    <Card contentStyle={ styles.cardContainer } style={{ backgroundColor: theme.colors.background }}>
       <Image 
         source={item.image_url}
         placeholder={require('@/assets/images/react-logo.png') }

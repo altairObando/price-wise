@@ -10,6 +10,7 @@ import { ActivityIndicator, SegmentedButtons, Surface, Text } from 'react-native
 export default function SearchView(){
     const params = useLocalSearchParams();
     const { searchProduct, searchInAllStores, loading, stores, setLoading, setStores } = useContext(AppContext);
+    const enabledStores = stores.filter( item => item.enabled)
     const [ products, setProducts ] = useState<Product[]>([]);
     
     const [ filters, setFilters ] = useState<string[]>([]);
@@ -30,13 +31,13 @@ export default function SearchView(){
                 const productName = params.search as string;
                 if(stores.length === 0 ){
                     const response = await searchInAllStores(productName);
-                    const stores = response.map<Store>(item => ({ code: item.store_name, name: normalizeText(item.store_name) }));
+                    const stores = response.map<Store>(item => ({ code: item.store_name, name: normalizeText(item.store_name), enabled: true }));
                     const product_items = response.flatMap(store => store.products);                    
                     setStores(stores);
                     setProducts(product_items.map(item => ({...item, market_code: normalizeText(item.market_code ?? '')})));
                 } else{
                     await Promise.all(
-                        stores.map(store => 
+                        stores.filter( item => item.enabled).map(store => 
                             searchProduct(productName, store.code)
                             .then(response => {
                                 setProducts(prev => [...prev, ...response.map(item => ({...item, market_code: store.name }))])
@@ -51,18 +52,20 @@ export default function SearchView(){
         searchProducts();
     },[ params.search ])
     useEffect(()=>{
-        if(stores.length === 0) return;
-        setFilters(stores.map(item => item.code))
+        if(enabledStores.length === 0) return;
+        setFilters(enabledStores.map(item => item.code))
     },[ stores ]);
     if( loading )
         return <ActivityIndicator />
     return <Surface style={{ display: 'flex', flex: 1, padding: 8, gap: 8 }}>
         <Text variant='headlineLarge'>Resultados: { params.search as string }</Text>
-        <SegmentedButtons
+        {
+            enabledStores.length > 1 ? <SegmentedButtons
             value={ filters }
-            onValueChange={ setFilters}
+            onValueChange={ setFilters }
             multiSelect
-            buttons={[ ...stores.map(item => ({ value: item.code, label: item.name, showSelectedCheck: true })) ]} />
+            buttons={[ ...enabledStores.map(item => ({ value: item.code, label: item.name, showSelectedCheck: true })) ]} /> : null
+        }
         <FlatList
             data={ processedProducts }
             keyExtractor={(item, index) => `${index}-${item.market_code}-${item.url}`}

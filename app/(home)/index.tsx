@@ -10,14 +10,14 @@ import { ActivityIndicator, Surface, Text } from 'react-native-paper';
 
 export default function Index() {
   const router = useRouter();
-  const { loading, getRecomendations, stores, setStores } = useContext(AppContext);
+  const { loading, getRecomendations, setStores } = useContext(AppContext);
   const [products, setProducts] = useState<Product[]>([]);
   const [searchText, setSearchText] = useState('');
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     getRecomendations().then((response: StoreProduct[]) => {
-      const store_names = response.map<Store>(item => ({ code: item.store_name, name: normalizeText(item.store_name)}));
+      const store_names = response.map<Store>(item => ({ code: item.store_name, name: normalizeText(item.store_name), enabled: true}));
       const product_items = response.flatMap(store => store.products);
       
       setStores(store_names);
@@ -41,7 +41,6 @@ export default function Index() {
         value={searchText}
         onChange={setSearchText}
         onSubmit={() => onSearchProduct()}
-        stores={stores.map(item => item.name)}
         showMenu={showMenu}
         setShowMenu={setShowMenu}
       />
