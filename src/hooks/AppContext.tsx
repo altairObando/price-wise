@@ -9,6 +9,8 @@ export interface Store {
     enabled: boolean
 }
 export interface AppContextProps {
+    product: Product|null;
+    setProduct: React.Dispatch<React.SetStateAction<Product|null>>;
     stores: Store[],
     setStores: React.Dispatch<React.SetStateAction<Store[]>>;
     loading: boolean;
@@ -20,8 +22,10 @@ export interface AppContextProps {
 
 export const AppContext = createContext<AppContextProps>({} as AppContextProps);
 export const AppContextProvider:React.FunctionComponent<PropsWithChildren>=({ children })=>{
-    const [ stores, setStores ] = useState<Store[]>([]);
-    const [ loading, setLoading]=useState<boolean>(false)
+    const [ stores, setStores   ] = useState<Store[]>([]);
+    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ product, setProduct ] = useState<Product|null>(null);
+
     async function getRecomendations(): Promise<StoreProduct[]>{
         try {
             setLoading(true)
@@ -57,7 +61,8 @@ export const AppContextProvider:React.FunctionComponent<PropsWithChildren>=({ ch
     const contextValue = {
         stores, setStores,
         loading, setLoading,
-        getRecomendations, searchProduct, searchInAllStores
+        getRecomendations, searchProduct, searchInAllStores,
+        product, setProduct
     }
     return <AppContext.Provider value={contextValue}>
         { children }
