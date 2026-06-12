@@ -6,9 +6,10 @@ import { Button, Card, Icon, Text, useTheme } from 'react-native-paper';
 
 interface ProductCardProps {
   item: Product;
+  onPress?: ( item: Product) => void
 }
 
-export const ProductCard = ({ item }: ProductCardProps) => {
+export const ProductCard = ({ item, onPress }: ProductCardProps) => {
   const theme = useTheme();
   return (
     <Card contentStyle={ styles.cardContainer } style={{ backgroundColor: theme.colors.background }}>
@@ -41,7 +42,10 @@ export const ProductCard = ({ item }: ProductCardProps) => {
           )}
         </View>
 
-        <Button mode='contained-tonal' icon='compare-horizontal'>
+        <Button mode='contained-tonal' icon='compare-horizontal' onPress={ ()=>{
+          if( typeof onPress === 'function')
+            onPress(item)
+        }}>
           Detalles
         </Button>
       </View>

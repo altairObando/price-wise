@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import React, { createContext, PropsWithChildren, useState } from 'react';
+import React, { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { Product, StoreProduct } from '../lib/dto/Product';
 import StoreService from '../lib/StoreService';
 
@@ -68,5 +68,5 @@ export const AppContextProvider:React.FunctionComponent<PropsWithChildren>=({ ch
         { children }
     </AppContext.Provider>
 }
-
+export const useAppContext = ()=> useContext(AppContext);
 

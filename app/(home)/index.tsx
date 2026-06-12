@@ -10,7 +10,7 @@ import { ActivityIndicator, Surface, Text } from 'react-native-paper';
 
 export default function Index() {
   const router = useRouter();
-  const { loading, getRecomendations, setStores } = useContext(AppContext);
+  const { loading, getRecomendations, setStores, setProduct } = useContext(AppContext);
   const [products, setProducts] = useState<Product[]>([]);
   const [searchText, setSearchText] = useState('');
   const [showMenu, setShowMenu] = useState(false);
@@ -35,6 +35,11 @@ export default function Index() {
     return [...products].sort((a, b) => (a.discount ?? '') > (b.discount ?? '') ? -1 : 1);
   }, [products]);
 
+  const onProductPress = ( product: Product )=>{
+    setProduct(product);
+    router.push({ pathname: '/(home)/details', params: { offer: '1' }})
+  }
+
   return (
     <Surface style={{ flex: 1, padding: 8, gap: 10 }}>
       <SearchBarHeader 
@@ -54,7 +59,7 @@ export default function Index() {
         keyExtractor={(item, index) => `${index}-${item.market_code}-${item.url}`}
         contentContainerStyle={{ paddingBottom: 20 }}
         ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
-        renderItem={({ item }) => <ProductCard item={item} />}
+        renderItem={({ item }) => <ProductCard item={item} onPress={ onProductPress } />}
       />
     </Surface>
   );

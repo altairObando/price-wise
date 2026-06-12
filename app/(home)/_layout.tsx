@@ -6,7 +6,7 @@ import { useTheme } from 'react-native-paper';
 export default function HomeLayout(){
     const theme = useTheme();
     return <Stack screenOptions={{
-        headerRight: (props) => <View style={{ display:'flex', flexDirection:'row', gap: 8 }}>
+        headerRight: (props) => <View {...props} style={{ display:'flex', flexDirection:'row', gap: 8, backgroundColor: 'transparent' }}>
           <RoundedIcon {...props} size={24} source='bell' />
           <RoundedIcon {...props} size={24} source='account' />
         </View>,
@@ -17,5 +17,6 @@ export default function HomeLayout(){
     }}>
         <Stack.Screen name='index' options={{ headerTitle: 'Price Wise'}}/>
         <Stack.Screen name='search' options={{ headerTitle: 'Buscar' }} />
+        <Stack.Screen name='details' options={{ headerTitle: 'Detalles'}} />
     </Stack>
 }
